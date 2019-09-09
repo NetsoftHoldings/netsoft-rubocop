@@ -63,6 +63,14 @@ Rails:
 Rails/HttpPositionalArguments:
   Enabled: false
 
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - staging
+    - development
+    - test
+    - review
+
 Rails/SkipsModelValidations:
   Whitelist:
     - touch
