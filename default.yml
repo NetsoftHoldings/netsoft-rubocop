@@ -70,6 +70,8 @@ Rails/UnknownEnv:
     - development
     - test
     - review
+    - api-production
+    - api-staging
 
 Rails/SkipsModelValidations:
   Whitelist:
