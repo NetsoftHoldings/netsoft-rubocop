@@ -46,6 +46,10 @@ Layout/IndentFirstHashElement:
   EnforcedStyle: consistent
   IndentationWidth: 4
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+  IndentationWidth: 4
+
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: space
   SpaceBeforeBlockParameters: true
