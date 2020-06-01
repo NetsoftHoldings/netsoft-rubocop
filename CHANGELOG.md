@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Switch to newest versions of rubocop, and rubocop-[everything]
 - Update the default config with the recent set of rules corresponding to the new version
+- reworked gem so that it can simply be required like other rubocop gems
 
 ## [1.0.2] - 2020-09-09
 ### Changed
