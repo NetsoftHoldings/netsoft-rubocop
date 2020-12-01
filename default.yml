@@ -35,9 +35,6 @@ Layout/AlignHash:
 Layout/ExtraSpacing:
   AllowForAlignment: true
 
-Layout/IndentAssignment:
-  IndentationWidth: 4
-
 Layout/IndentFirstArrayElement:
   EnforcedStyle: consistent
   IndentationWidth: 4
