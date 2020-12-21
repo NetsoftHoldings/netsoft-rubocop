@@ -3,12 +3,14 @@ require:
   - rubocop-rails
   - rubocop-performance
   - rubocop-rspec
+  - rubocop-rake
 
 AllCops:
   TargetRubyVersion: 2.5
   TargetRailsVersion: 5.2
   DisplayStyleGuide: true
   StyleGuideBaseURL: https://rubystyle.guide
+  NewCops: enable
   Exclude:
     - 'db/**/*'
     - 'coverage/**/*'
@@ -20,29 +22,22 @@ AllCops:
     - 'gemfiles/**/*'
     - 'node_modules/**/*'
 
-Naming/RescuedExceptionsVariableName:
-  PreferredName: ex
-
-Naming/UncommunicativeMethodParamName:
-  AllowedNames:
-    - me
-    - ex
-
-Layout/AlignHash:
-  EnforcedHashRocketStyle: table
-  EnforcedColonStyle: table
+# region Layout
+Layout/AssignmentIndentation:
+  IndentationWidth: 4
 
 Layout/ExtraSpacing:
   AllowForAlignment: true
 
-Layout/IndentAssignment:
-  IndentationWidth: 4
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
 
-Layout/IndentFirstArrayElement:
+Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
   IndentationWidth: 4
 
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
   IndentationWidth: 4
 
@@ -56,19 +51,96 @@ Layout/SpaceInsideBlockBraces:
 
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
+# endregion
 
+# region Lint
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*
 
+Lint/NonDeterministicRequireOrder:
+  Enabled: false
+
+Lint/StructNewOverride:
+  Enabled: false
+#endregion
+
+# region Naming
+Naming/RescuedExceptionsVariableName:
+  PreferredName: ex
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: optional
+
+Naming/MethodParameterName:
+  AllowedNames:
+    - at
+    - by
+    - db
+    - id
+    - in
+    - io
+    - ip
+    - of
+    - 'on'
+    - os
+    - pp
+    - to
+    - tz
+    - my
+    - me
+    - ex
+    - uo
+    - up
+
+Naming/PredicateName:
+  # By default, it also forbids has_, but that's rarely a good suggestion:
+  # is #has_screenshots? => #screenshots? better?..
+  ForbiddenPrefixes:
+    - is_
+
+Naming/VariableNumber:
+  Enabled: false
+# endregion
+
+# region Performance
+Performance/CollectionLiteralInLoop:
+  Enabled: false
+
+Performance/MethodObjectAsBlock:
+  Enabled: false
+
+# superseded by Performance/RgexpMatch
+Performance/RedundantMatch:
+  Enabled: false
+
+Performance/BlockGivenWithExplicitBlock:
+  Enabled: false
+
+Performance/TimesMap:
+  Enabled: false
+
+# endregion
+
+# region Rails
 Rails:
   Enabled: true
+
+Rails/FilePath:
+  EnforcedStyle: arguments
+
+# We do it on a DB level
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
 
 Rails/HttpPositionalArguments:
   Enabled: false
 
+Rails/HttpStatus:
+  EnforcedStyle: numeric
+
 Rails/SkipsModelValidations:
-  Whitelist:
+  AllowedMethods:
     - touch
     - update_attribute
     - update_counters
@@ -80,13 +152,35 @@ Netsoft/AuthHttpPositionalArguments:
   Include:
     - 'spec/controllers/**/*'
 
+# endregion
+
+# region RSpec
+# Prohibits before/after(:all) for ever uses. But when we use it, we know what we do
+RSpec/BeforeAfterAll:
+  Enabled: false
+
 RSpec/ExpectChange:
   EnforcedStyle: block
 
 RSpec/ImplicitSubject:
   Enabled: false
 
+# Just prohibits `let!` for any usages
+# Nice try, Rubocop.
+RSpec/LetSetup:
+  Enabled: false
+
 RSpec/MessageSpies:
+  Enabled: false
+
+# TODO: It would be good to set a realistic Max: once, but we have all kind of specs with multiple
+# expectations now.
+RSpec/MultipleExpectations:
+  Enabled: false
+
+# Allows to limit number of `let`s. What for?..
+# NB: With current setting (5 max) we have... "Offense count: 22706"
+RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
 RSpec/NamedSubject:
@@ -98,6 +192,25 @@ RSpec/NestedGroups:
 RSpec/NotToNot:
   EnforcedStyle: to_not
 
+# endregion
+
+# region Style
+
+# Allows to enforce either this:
+#
+#   attr_reader :a
+#   attr_reader :b
+#
+# (all accessors separate), or this:
+#
+#   attr_reader :a, :b
+#
+# (all accessors in one statement).
+#
+# We use both, and it is hard to tell why it should be limited...
+Style/AccessorGrouping:
+  Enabled: false
+
 Style/AndOr:
   EnforcedStyle: conditionals
 
@@ -105,10 +218,71 @@ Style/BlockDelimiters:
   EnforcedStyle: semantic
   AllowBracesOnProceduralOneLiners: true
 
+Style/CommentAnnotation:
+  Enabled: false
+
+# Asks to write comment besides dynamically evaluated method, showing how the code would look,
+# see cop docs: https://docs.rubocop.org/rubocop/cops_style.html#styledocumentdynamicevaldefinition
+#
+# Ideally, would be cool, but lot of work.
+Style/DocumentDynamicEvalDefinition:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+# Asks to write empty methods this way:
+#
+#    def foo; end
+#
+Style/EmptyMethod:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/HashAsLastArrayItem:
+  EnforcedStyle: no_braces
+
+Style/Lambda:
+  EnforcedStyle: literal
+
 Style/MultilineBlockChain:
   Enabled: false
 
+# FIXME: This cop requires to attach .freeze to each and every constant.
+# It is both ugly AND doesn't protect from bugs (the freeze is shallow, so some frozen CONFIG hash
+# can still be changed).
+# We need to develop our own .deep_freeze for configs, and cops to check that it is attached to
+# hashes, arrays and values fetched from ENV/configs.
+Style/MutableConstant:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
 Style/RescueModifier:
+  Enabled: false
+
+# Asks to avoid `rescue => exception` without particular class.
+# Why?..
+Style/RescueStandardError:
+  Enabled: false
+
+Style/SingleArgumentDig:
+  Enabled: false
+
+Style/StringConcatenation:
+  Enabled: false
+
+Style/StringLiterals:
+  # up for debate
+  Enabled: false
+
+Style/StructInheritance:
   Enabled: false
 
 Style/TrailingCommaInArrayLiteral:
@@ -117,8 +291,7 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
 
-Metrics:
-  Enabled: false
+#endregion
 
-Style/DoubleNegation:
+Metrics:
   Enabled: false
