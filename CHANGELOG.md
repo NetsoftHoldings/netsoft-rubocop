@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+### Changed
+### Fixed
+
+## [1.1.0] - 2021-01-20
 ### Changed
 - Switch to newest versions of rubocop, and rubocop-[everything]
 - Update the default config with the recent set of rules corresponding to the new version
