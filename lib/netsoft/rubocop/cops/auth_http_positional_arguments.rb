@@ -37,7 +37,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          message = format(MSG, verb: node.method_name)
+          message = MSG % {verb: node.method_name}
 
           http_request?(node) do |data|
             return unless needs_conversion?(data)
@@ -77,9 +77,9 @@ module RuboCop
           code_to_replace = node.loc.expression
           # what to replace with
           format = parentheses_format(node)
-          new_code = format(format, name: node.method_name,
+          new_code = format % {name: node.method_name,
                             action: has_auth ? [user.source, controller_action].join(',') : controller_action,
-                            params: params, session: session)
+                            params: params, session: session}
           ->(corrector) { corrector.replace(code_to_replace, new_code) }
         end
 
@@ -115,15 +115,14 @@ module RuboCop
           return '' if data.hash_type? && data.empty?
 
           hash_data = if data.hash_type?
-                        format('{ %<data>s }',
-                               data: data.pairs.map(&:source).join(', '))
+                        '{ %<data>s }' % {data: data.pairs.map(&:source).join(', ')}
                       else
                         # user supplies an object,
                         # no need to surround with braces
                         data.source
                       end
 
-          format(', %<type>s: %<hash_data>s', type: type, hash_data: hash_data)
+          ', %<type>s: %<hash_data>s' % {type: type, hash_data: hash_data}
         end
 
         def parentheses_format(node)
