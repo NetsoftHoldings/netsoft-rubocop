@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 ### Changed
 ### Fixed
+- fixed path in config
 
 ## [1.1.0] - 2021-01-20
 ### Changed

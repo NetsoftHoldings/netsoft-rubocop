@@ -1,5 +1,5 @@
 require:
-  - ./lib/netsoft/rubocop/cops/auth_http_positional_arguments
+  - ../lib/netsoft/rubocop/cops/netsoft/auth_http_positional_arguments
   - rubocop-rails
   - rubocop-performance
   - rubocop-rspec
