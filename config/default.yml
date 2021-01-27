@@ -35,11 +35,9 @@ Layout/HashAlignment:
 
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
-  IndentationWidth: 4
 
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
-  IndentationWidth: 4
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented_relative_to_receiver

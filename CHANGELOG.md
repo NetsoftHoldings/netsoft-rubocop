@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
+## [1.1.2] - 2021-01-27
+### Changed
+- adjust array and hash indent rules to be default 2 space indent
+
 ## [1.1.1] - 2021-01-21
 ### Fixed
 - fixed path in config
