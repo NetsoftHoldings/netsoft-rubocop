@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 ### Changed
-- update rubocop, and rubocop-[everything] to latest versions
-
 ### Fixed
+
+## [1.1.3] - 2021-05-10
+### Changed
+- update rubocop, and rubocop-[everything] to latest versions
 
 ## [1.1.2] - 2021-01-27
 ### Changed
