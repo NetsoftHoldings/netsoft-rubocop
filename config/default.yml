@@ -22,6 +22,11 @@ AllCops:
     - 'gemfiles/**/*'
     - 'node_modules/**/*'
 
+# Checks that the gemspec has metadata to require MFA from RubyGems
+# Irrelevant for internal gems
+Gemspec/RequireMFA:
+  Enabled: false
+
 # region Layout
 Layout/AssignmentIndentation:
   IndentationWidth: 4
@@ -51,6 +56,15 @@ Layout/SpaceInsideHashLiteralBraces:
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*
+
+# Requires to change `foo + bar * baz` into `foo + (bar * baz)` for clarity. WHAT.
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
+# Prohibits ranges like 1.minute..5.minutes, and wants them to look like (1.minute)..(5.minutes)
+# Please no.
+Lint/AmbiguousRange:
+  Enabled: false
 
 Lint/NonDeterministicRequireOrder:
   Enabled: false
@@ -98,6 +112,11 @@ Naming/VariableNumber:
 # endregion
 
 # region Performance
+# Wants to convert 0.to_d into BigDecimal.new('0'), which is ugly and doesn't actually do anything
+# to "improve performance"
+Performance/BigDecimalWithNumericArgument:
+  Enabled: false
+
 Performance/CollectionLiteralInLoop:
   Enabled: false
 
@@ -132,6 +151,15 @@ Rails/HttpPositionalArguments:
 
 Rails/HttpStatus:
   EnforcedStyle: numeric
+
+# The cop states that if you have `belongs_to :organization`, the validator is added automatically,
+# so you don't need `validates :organization, presence: true` (or `validates :organization_id`).
+#
+# I (zverok) checked it on our codebase and it is not true. Should be clarified later, maybe our
+# Rails version is too old?..
+#
+Rails/RedundantPresenceValidationOnBelongsTo:
+  Enabled: false
 
 Rails/SkipsModelValidations:
   AllowedMethods:
@@ -253,6 +281,21 @@ Style/MultilineBlockChain:
 # We need to develop our own .deep_freeze for configs, and cops to check that it is attached to
 # hashes, arrays and values fetched from ENV/configs.
 Style/MutableConstant:
+  Enabled: false
+
+# Allows them only in single-line blocks. Doesn't really help!
+Style/NumberedParameters:
+  Enabled: false
+
+Style/NumberedParametersLimit:
+  Max: 2
+
+# Just prohibits OpenStruct forever. Technically reasonable, but when we use it, we know what we do
+Style/OpenStructUse:
+  Enabled: false
+
+# Asks to change `"foo-bar": baz` to `'foo-bar': baz`. Lots of changes, little value
+Style/QuotedSymbols:
   Enabled: false
 
 Style/ParallelAssignment:
