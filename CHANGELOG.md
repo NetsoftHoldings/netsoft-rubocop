@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
+## [1.1.4] - 2022-01-26
+### Changed
+- update rubocop, and rubocop-[everything] to latest versions
+
+
 ## [1.1.3] - 2021-05-10
 ### Changed
 - update rubocop, and rubocop-[everything] to latest versions
