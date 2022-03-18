@@ -29,7 +29,7 @@ Gemspec/RequireMFA:
 
 # region Layout
 Layout/AssignmentIndentation:
-  IndentationWidth: 4
+  IndentationWidth: 2
 
 Layout/ExtraSpacing:
   AllowForAlignment: true
