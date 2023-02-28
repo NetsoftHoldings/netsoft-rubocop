@@ -21,14 +21,12 @@ Gem::Specification.new do |spec|
   spec.extra_rdoc_files = %w[README.md]
   spec.require_paths = %w[lib]
 
-  spec.required_ruby_version = '>= 2.4' # rubocop: disable Gemspec/RequiredRubyVersion
+  spec.required_ruby_version = '>= 2.7' # rubocop: disable Gemspec/RequiredRubyVersion
 
-  spec.add_development_dependency 'bundler', '~> 1.15'
-  spec.add_development_dependency 'rake', '>= 12.0'
-
-  spec.add_runtime_dependency 'rubocop', '= 1.25.0'
-  spec.add_runtime_dependency 'rubocop-performance', '= 1.13.2'
-  spec.add_runtime_dependency 'rubocop-rails', '= 2.13.2'
+  spec.add_runtime_dependency 'rubocop', '= 1.51.0'
+  spec.add_runtime_dependency 'rubocop-graphql', '= 1.1.1'
+  spec.add_runtime_dependency 'rubocop-performance', '= 1.18.0'
+  spec.add_runtime_dependency 'rubocop-rails', '= 2.19.1'
   spec.add_runtime_dependency 'rubocop-rake', '= 0.6.0'
-  spec.add_runtime_dependency 'rubocop-rspec', '= 2.7.0'
+  spec.add_runtime_dependency 'rubocop-rspec', '= 2.22.0'
 end
