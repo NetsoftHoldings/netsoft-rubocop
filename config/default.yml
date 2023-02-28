@@ -4,6 +4,9 @@ require:
   - rubocop-performance
   - rubocop-rspec
   - rubocop-rake
+  - rubocop-capybara
+  - rubocop-factory_bot
+  - rubocop-graphql
 
 AllCops:
   TargetRubyVersion: 2.5
@@ -12,6 +15,7 @@ AllCops:
   StyleGuideBaseURL: https://rubystyle.guide
   NewCops: enable
   Exclude:
+    - 'bin/**/*'
     - 'db/**/*'
     - 'coverage/**/*'
     - 'log/**/*'
@@ -21,6 +25,7 @@ AllCops:
     - 'vendor/**/*'
     - 'gemfiles/**/*'
     - 'node_modules/**/*'
+    - '.pryrc'
 
 # Checks that the gemspec has metadata to require MFA from RubyGems
 # Irrelevant for internal gems
@@ -43,6 +48,9 @@ Layout/FirstArrayElementIndentation:
 
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
+
+Layout/LineContinuationSpacing:
+  EnforcedStyle: no_space
 
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: space
@@ -139,6 +147,13 @@ Performance/TimesMap:
 Rails:
   Enabled: true
 
+# Requires to always use `I18n.t('foo.bar.baz')` instead of I18n.t(:baz, scope: [:foo, :bar])`
+# because it is "easier to read".
+# The latter is superior when scopes are dynamic, or just very long. Cop doesn't have a setting
+# for one style or another, just always forces dots.
+Rails/DotSeparatedKeys:
+  Enabled: false
+
 Rails/FilePath:
   EnforcedStyle: arguments
 
@@ -151,6 +166,11 @@ Rails/HttpPositionalArguments:
 
 Rails/HttpStatus:
   EnforcedStyle: numeric
+
+# Forces _all_ strings to be in locales. Not gonna happen in any foreseeable future.
+Rails/I18nLocaleTexts:
+  Enabled: false
+
 
 # The cop states that if you have `belongs_to :organization`, the validator is added automatically,
 # so you don't need `validates :organization, presence: true` (or `validates :organization_id`).
@@ -177,8 +197,14 @@ Netsoft/AuthHttpPositionalArguments:
 # endregion
 
 # region RSpec
+
 # Prohibits before/after(:all) for ever uses. But when we use it, we know what we do
 RSpec/BeforeAfterAll:
+  Enabled: false
+
+# Unnecessary formality to require replacing `eq true` with `be true`
+# (for true, false and nil) because it is "stricter".
+RSpec/BeEq:
   Enabled: false
 
 RSpec/ExpectChange:
@@ -213,6 +239,14 @@ RSpec/NestedGroups:
 
 RSpec/NotToNot:
   EnforcedStyle: to_not
+
+# Wants metadata keys to be alphabetically sorted. Like, really?..
+RSpec/SortMetadata:
+  Enabled: false
+
+# Same as for Rails/HttpStatus
+RSpec/Rails/HttpStatus:
+  EnforcedStyle: numeric
 
 # endregion
 
@@ -253,6 +287,11 @@ Style/DocumentDynamicEvalDefinition:
 Style/DoubleNegation:
   Enabled: false
 
+# Requires to replace all (0..10).each { ... } with 10.times { ... }
+# Not always the most expressive option.
+Style/EachForSimpleLoop:
+  Enabled: false
+
 # Asks to write empty methods this way:
 #
 #    def foo; end
@@ -271,6 +310,13 @@ Style/HashAsLastArrayItem:
 
 Style/Lambda:
   EnforcedStyle: literal
+
+# Forces to change `foo = val < 0 ? 0 : val` to `foo = [0, val].max`
+# Proper readable change is actually `foo = val.clamp(0..)`, but there is no such option.
+# The one with max/min produces weird-ish statements frequently, so it is better to wait for
+# a clamp-ing cop or create it ourselves.
+Style/MinMaxComparison:
+  Enabled: false
 
 Style/MultilineBlockChain:
   Enabled: false
@@ -299,6 +345,11 @@ Style/QuotedSymbols:
   Enabled: false
 
 Style/ParallelAssignment:
+  Enabled: false
+
+# Prohibits `::Foo` style constants unless strictly necessary. Reasonable, but glitches with
+# autoloading/guessing from where to autoload.
+Style/RedundantConstantBase:
   Enabled: false
 
 Style/RescueModifier:
