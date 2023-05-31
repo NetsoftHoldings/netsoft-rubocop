@@ -8,46 +8,25 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+.[0-9a-z]+
       - v[0-9]+.[0-9]+.[0-9]+
 
+env:
+  RUBYOPT: "-W:no-deprecated -W:no-experimental"
 
 jobs:
 
   rubocop:
     name: Rubocop
     runs-on: [self-hosted, ubuntu-t3.medium]
-    container:
-      image: public.ecr.aws/q0j1f2t0/ruby:2.5.5-bionic
-      options: --user 1000
-      env:
-        BUNDLE_PATH: vendor/bundle
-        BUNDLE_VERSION: 1.17.3
-        BUNDLE_JOBS: 4
-        BUNDLE_RETRY: 3
-        RAILS_ENV: test
-        RUBYOPT: '-KU -E utf-8:utf-8'
 
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Install Bundler
-        shell: bash
-        run: |
-          gem install bundler --version=$BUNDLE_VERSION --no-document
-
-      - uses: actions/cache@v2
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          path: |
-            vendor/bundle
-            Gemfile.lock
-          key: netsoft-rubocop-bundle-${{ hashFiles('Gemfile.lock') }}
-          restore-keys: |
-            netsoft-rubocop-bundle-${{ hashFiles('Gemfile.lock') }}
-            netsoft-rubocop-bundle-
-
-      - name: 'Bundler install'
-        shell: bash
-        run: |
-          bundle _${BUNDLE_VERSION}_ check || bundle _${BUNDLE_VERSION}_ install --retry=$BUNDLE_RETRY
+          ruby-version: 3.2
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          cache-version: 1.0
 
       - uses: actions/cache@v2
         with:
@@ -60,35 +39,27 @@ jobs:
       - name: Rubocop
         shell: bash
         run: |
-          bundle _${BUNDLE_VERSION}_ exec rubocop \
+          bundle exec rubocop \
             --parallel \
             --format progress
 
 
   publish:
     name: Publish
-    if: |
-      github.event_name == 'push' && contains(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/v')
     needs: [ rubocop ]
     runs-on: [self-hosted, ubuntu-t3.medium]
-    container:
-      image: public.ecr.aws/q0j1f2t0/ruby:2.5.5-bionic
-      options: --user 1000
-      env:
-        BUNDLE_PATH: vendor/bundle
-        BUNDLE_VERSION: 1.17.3
-        BUNDLE_JOBS: 4
-        BUNDLE_RETRY: 3
-        RAILS_ENV: test
-        RUBYOPT: '-KU -E utf-8:utf-8'
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out repository code
+        uses: actions/checkout@v3
 
-      - name: Install Bundler
-        shell: bash
-        run: |
-          gem install bundler --version=$BUNDLE_VERSION --no-document
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          cache-version: 1.0
 
       - name: Get Tag Name
         id: tag_name
@@ -125,30 +96,19 @@ jobs:
 
   danger:
     name: Run danger
-    if: |
-      github.event_name == 'pull_request' && always()
+    if: github.event_name == 'pull_request' && always()
     needs: [ rubocop ]
     runs-on: [self-hosted, ubuntu-t3.medium]
-    container:
-      image: public.ecr.aws/q0j1f2t0/ruby:2.5.5-bionic
-      options: --user 1000
-      env:
-        BUNDLE_PATH: vendor/bundle
-        BUNDLE_VERSION: 1.17.3
-        BUNDLE_JOBS: 4
-        BUNDLE_RETRY: 3
-        RAILS_ENV: test
-        RUBYOPT: '-KU -E utf-8:utf-8'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Install Bundler
-        shell: bash
-        run: |
-          gem install bundler --version=$BUNDLE_VERSION --no-document
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
 
       - name: Install Danger
         shell: bash
