@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.4' # rubocop: disable Gemspec/RequiredRubyVersion
 
-  spec.add_development_dependency 'bundler', '~> 1.15'
   spec.add_development_dependency 'rake', '>= 12.0'
 
   spec.add_runtime_dependency 'rubocop', '= 1.25.0'
