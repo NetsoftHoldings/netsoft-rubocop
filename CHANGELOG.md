@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
+## [1.1.6] - 2022-05-31
+### Changed
+- update rubocop, and rubocop-[everything] to latest versions
+- add new rules according to new cops emerged
+
 ## [1.1.5] - 2022-03-18
 ### Changed
 - adjust assignment indent rule to be default 2 space indent
