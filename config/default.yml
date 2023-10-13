@@ -36,6 +36,12 @@ Gemspec/RequireMFA:
 Layout/AssignmentIndentation:
   IndentationWidth: 2
 
+# prohibits empty line before `rescue`. But `rescue` frequently a complicated statement, and
+# last body's statement before it might be complicated too, so there is no reason to not put
+# an extra line there if the writer wants.
+Layout/EmptyLinesAroundExceptionHandlingKeywords:
+  Enabled: false
+
 Layout/ExtraSpacing:
   AllowForAlignment: true
 
