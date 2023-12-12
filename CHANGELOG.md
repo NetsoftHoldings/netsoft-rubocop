@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
+## [1.1.8] - 2023-12-12
+### Fixed
+- fix dependency on gems that are only necessary for CI
+
 ## [1.1.7] - 2023-10-18
 ### Changed
 - update rubocop, and rubocop-[everything] to latest versions
