@@ -23,12 +23,6 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.7' # rubocop: disable Gemspec/RequiredRubyVersion
 
-  # These versions come by default with Ruby 3.2. If we don't specify them,
-  # Ruby will try to install the newest, which requires C compiler, which
-  # fails currently on our CI.
-  spec.add_runtime_dependency 'bigdecimal', '<= 3.1.3'
-  spec.add_runtime_dependency 'racc', '<= 1.6.2'
-
   # NB: Do not update to 1.57.1, it has a bug: https://github.com/rubocop/rubocop/issues/12275
   spec.add_runtime_dependency 'rubocop', '= 1.57.0'
   spec.add_runtime_dependency 'rubocop-graphql', '= 1.1.1'
