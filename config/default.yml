@@ -5,6 +5,7 @@ require:
   - rubocop-rspec
   - rubocop-rake
   - rubocop-capybara
+  - rubocop-rspec_rails
   - rubocop-factory_bot
   - rubocop-graphql
 
@@ -251,8 +252,24 @@ RSpec/SortMetadata:
   Enabled: false
 
 # Same as for Rails/HttpStatus
-RSpec/Rails/HttpStatus:
+RSpecRails/HttpStatus:
   EnforcedStyle: numeric
+
+# Limits an amount of items created by `create_list`. This should be a human decision on review, not
+# mechanical limitation.
+FactoryBot/ExcessiveCreateList:
+  Enabled: false
+
+# Prohibits literals like numbers in the descriptions; which might sometimes be useful, and also conflicts
+# with `its_call(number)` (which it understands like a description).
+RSpec/UndescriptiveLiteralsDescription:
+  Enabled: false
+
+# Enforces either `to have_no_selector` (the default) or `to_not have_selector` (a setting).
+# We use the latter in our codebase, but there is no reason to strictly prohibit the former (it
+# might be used in chains), so no biggie.
+Capybara/NegationMatcher:
+  Enabled: false
 
 # endregion
 
