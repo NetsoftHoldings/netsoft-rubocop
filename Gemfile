@@ -15,4 +15,5 @@ group :development, :test do
   gem 'bigdecimal', '<= 3.1.3'
   gem 'json', '<= 2.6.3'
   gem 'racc', '<= 1.6.2'
+  gem 'strscan', '<= 3.0.5'
 end

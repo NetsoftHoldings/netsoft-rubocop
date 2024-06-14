@@ -23,11 +23,17 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.7' # rubocop: disable Gemspec/RequiredRubyVersion
 
-  # NB: Do not update to 1.57.1, it has a bug: https://github.com/rubocop/rubocop/issues/12275
-  spec.add_runtime_dependency 'rubocop', '= 1.57.0'
+  spec.add_runtime_dependency 'rubocop', '= 1.64.1'
+  # TODO: The next version dropped support for Ruby < 2, can be updated when all of our projects
+  # are on Ruby 3+
   spec.add_runtime_dependency 'rubocop-graphql', '= 1.1.1'
-  spec.add_runtime_dependency 'rubocop-performance', '= 1.19.1'
-  spec.add_runtime_dependency 'rubocop-rails', '= 2.21.2'
+  spec.add_runtime_dependency 'rubocop-performance', '= 1.21.0'
+  spec.add_runtime_dependency 'rubocop-rails', '= 2.25.0'
   spec.add_runtime_dependency 'rubocop-rake', '= 0.6.0'
-  spec.add_runtime_dependency 'rubocop-rspec', '= 2.24.1'
+
+  spec.add_runtime_dependency 'rubocop-rspec', '= 3.0.1'
+  # Gems extracted from rubocop-rspec as separate projects:
+  spec.add_runtime_dependency 'rubocop-capybara', '= 2.21.0'
+  spec.add_runtime_dependency 'rubocop-factory_bot', '= 2.26.1'
+  spec.add_runtime_dependency 'rubocop-rspec_rails', '= 2.30.0'
 end
