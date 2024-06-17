@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
+## [1.1.9] - 2024-06-17
+### Changed
+- update rubocop, and rubocop-[everything] to latest possible versions that support Ruby 2
+- add new rules according to new cops emerged
+
 ## [1.1.8] - 2023-12-12
 ### Fixed
 - fix dependency on gems that are only necessary for CI
